@@ -7,60 +7,54 @@
 	buttonMode="true" 
 	height="28"
 	top="2" 
-	cornerRadius="2" 
+	cornerRadius="0" 
 	borderStyle="solid" 
 	borderThickness="0" 
 	backgroundColor="{(styleManager.getColorName(props.get('trayBackgroundColor')) as Number)}" 
 	backgroundAlpha="{(props.get('trayAlpha') as Number)}" 
-	mouseOver="videoTime.visible=true" 
-	mouseOut="videoTime.visible=false" 
 	click="seekVideoTo((this.contentMouseX-5)/videoProgress.width*activeElement.getNumber('length'));" 
 	resize="drawSections();"
 	>
-	<!-- VideoProgress -->
-	<mx:Canvas id="videoProgress" 
-		top="11" 
-		left="10" 
-		right="10" 
-		height="6" 
-		backgroundColor="0xCCCCCC" 
-		backgroundAlpha="0.6">
-		<mx:Canvas id="videoBufferProgress" 
-			x="0" 
+		<!-- VideoProgress -->
+		<mx:Canvas id="videoProgress" 
+			top="11" 
+			left="10" 
+			right="40" 
 			height="6" 
-			backgroundColor="white" 
-			backgroundAlpha="0.2" 
-			/>
-		<mx:Canvas id="videoPlayProgress" 
-			x="0"
-			height="6" 
-			backgroundColor="{(styleManager.getColorName(props.get('trayBackgroundColor')) as Number)}" 
-			backgroundAlpha="0.6" 
-			/>
-	</mx:Canvas>					
+			backgroundColor="#3B3B3B" 
+			backgroundAlpha="0.6">
+			<mx:Canvas id="videoBufferProgress" 
+				x="0" 
+				height="6" 
+				backgroundColor="green" 
+				backgroundAlpha="0.2" 
+				/>
+			<mx:Canvas id="videoPlayProgress" 
+				x="0"
+				height="6" 
+				backgroundColor="#E14721" 
+				backgroundAlpha="1" 
+				/>
+		</mx:Canvas>					
+		<!-- videoTime -->
+		<mx:HBox id="videoTime" 
+				 right="0" 
+				 top="4"
+				 >
+			<mx:Label id="videoTimeLabel" 
+					  selectable="false" 
+					  fontFamily="Helvetica, Arial" 
+					  fontSize="11" 
+					  height="12" 
+					  color="white"
+					  />
+		</mx:HBox>
 
 	<!-- Sections -->
 	<mx:Canvas id="sectionContainer" top="0" left="0" width="100%" height="100%">
 		
 	</mx:Canvas>
 	
-	<!-- videoTime -->
-	<mx:HBox id="videoTime" 
-		visible="false" 
-		y="{(this.height-videoTime.height)/2}" 
-		backgroundColor="0xFFFFFF" 
-		cornerRadius="2" 
-		borderStyle="solid" 
-		borderColor="white"
-		>
-		<mx:Label id="videoTimeLabel" 
-			selectable="false" 
-			fontFamily="Helvetica, Arial" 
-			fontSize="9" 
-			height="12" 
-			color="black"
-			/>
-	</mx:HBox>
 	
 	<mx:Script>
 		<![CDATA[
@@ -109,7 +103,6 @@
             	if(!_targetVideo) return;
 				videoPlayProgress.x = activeElement.getNumber('start') / activeElement.getNumber('length') * videoProgress.width;
 				videoPlayProgress.width  = _targetVideo.playheadTime/_targetVideo.totalTime*(videoProgress.width-videoPlayProgress.x);
-				videoTime.x = videoPlayProgress.x + videoPlayProgress.width - (videoTime.width/2);
 				videoTimeLabel.text = formatTime(_targetVideo.playheadTime + activeElement.getNumber('start'));
             }
 
